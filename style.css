@@ -1,0 +1,67 @@
+body {
+  margin: 0;
+  background: black;
+  font-family: 'Courier New', Courier, monospace;
+  overflow: hidden;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.terminal {
+  position: relative;
+  z-index: 1;
+  padding: 30px;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-y: auto;
+  color: #0f0;
+  text-shadow: 0 0 5px #0f0;
+  font-size: 16px;
+  background: rgba(0, 0, 0, 0.7);
+  border-left: 4px solid lime;
+  box-shadow: inset 0 0 20px #00ff00;
+}
+
+.rainbow {
+  animation: rainbow 4s linear infinite;
+  font-weight: bold;
+}
+
+@keyframes rainbow {
+  0% { color: red; }
+  16% { color: orange; }
+  32% { color: yellow; }
+  48% { color: lime; }
+  64% { color: cyan; }
+  80% { color: blue; }
+  100% { color: magenta; }
+}
+
+.blinker {
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.btn-fake {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background: red;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0 0 10px red;
+}
+
+.btn-fake:hover {
+  background: darkred;
+}
