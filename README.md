@@ -1,124 +1,48 @@
-# 💻 Hacker Web Simulation
+# Hacker-Web-Simulation
 
-> *Booting system...*
-> *Bypassing security protocols...*
-> *Access granted 🟢*
+Terminal visual de ficción; no ejecuta ataques ni minería.
 
----
+## Ejecutar
 
-## 🧠 Overview
+Requiere Node.js 22 o superior. No hay dependencias de paquetes.
 
-**Hacker Web Simulation** es una aplicación web interactiva que simula un entorno de hacking en tiempo real, con consola animada, efectos visuales y procesos automatizados.
-
-Diseñada para:
-
-* 🎬 Simulación visual tipo “hacker”
-* 🎮 Experiencia interactiva
-* 🧠 Aprendizaje y entretenimiento
-* 💼 Demostración técnica (portfolio)
-
----
-
-## ⚙️ Features
-
-* 🖥️ Consola estilo terminal en vivo
-* ⌨️ Animación de escritura automática
-* 🔐 Simulación de ataques y accesos
-* 💸 Generación ficticia de bitcoins
-* 🌐 Interfaz web inmersiva
-* 🎨 Efectos visuales tipo “Matrix”
-
----
-
-## 🛠️ Tech Stack
-
-```bash
-Frontend:
-- HTML5
-- CSS3 (Animations, Glitch Effects)
-- JavaScript (DOM, Events, Timing)
-
-Concepts:
-- UI Simulation
-- Asynchronous Execution
-- Visual Effects Rendering
+```sh
+git clone https://github.com/romangon10/Hacker-Web-Simulation.git
+cd Hacker-Web-Simulation
+npm start
 ```
 
----
+Abrí `http://127.0.0.1:3000`. Para usar otro puerto, configurá `PORT`. Serví la página por HTTP; los proyectos con módulos ES no funcionan abriendo el HTML con `file://`.
 
-## 🚀 Demo
+## Funcionalidad implementada
 
-> ⚡ Próximamente deploy en GitHub Pages
+- Pausa, reanudación y reinicio del estado y contador.
+- Animación adaptable al tamaño de pantalla y pausada en pestañas ocultas.
+- Modelo de simulación separado del DOM, con pruebas deterministas.
+- Movimiento reducido y registro accesible.
 
----
+## Estructura
 
-## 📦 Installation
+- `index.html`: contenido y controles.
+- `style.css`: estilos y adaptación de pantalla.
+- `script.js`: interacción con el navegador.
+- `tools/serve.mjs`: servidor local con lista explícita de archivos públicos.
+- `tools/build.mjs`: copia de los archivos públicos a `dist/`.
+- `test/`: verificaciones automatizadas.
 
-```bash
-# Clonar repositorio
-git clone https://github.com/TU-USUARIO/hacker-web-simulation.git
+## Verificación y publicación
 
-# Entrar al proyecto
-cd hacker-web-simulation
-
-# Abrir en navegador
-index.html
+```sh
+npm test
+npm run build
 ```
 
----
+El resultado `dist/` puede alojarse en un servicio estático. El build no publica la página por sí mismo. Las pruebas comprueban referencias locales y sintaxis; los proyectos con lógica de simulación incluyen pruebas de esa lógica. No se ha realizado verificación visual automatizada en un navegador.
 
-## 🎯 Purpose
+## Alcance
 
-Este proyecto NO realiza ningún tipo de hacking real.
+Frontend de portfolio. No hay backend, base de datos, autenticación ni recolección de datos. Los controles cambian únicamente el estado temporal de la página. Las mejoras futuras deben acompañarse de sus propias pruebas y documentación.
 
-✔️ Es una simulación visual
-✔️ Uso educativo / demostrativo
-✔️ Ideal para portfolio de desarrollador
+## Autor
 
----
-
-## 🧪 QA & Testing
-
-* ✔️ Testing manual de UI
-* 🐞 Validación de animaciones
-* ⚡ Performance en renderizado
-* 🔍 Control de errores en scripts
-
----
-
-## 🔮 Roadmap
-
-* [ ] Sonidos de sistema / hacking
-* [ ] Modo pantalla completa inmersivo
-* [ ] Simulación de red en tiempo real
-* [ ] Integración con APIs (fake data)
-* [ ] Version mobile responsive
-
----
-
-## 👨‍💻 Author
-
-**Román González**
-💻 Full Stack Developer | QA Tester
-
-> *"Simulating systems. Building experiences."*
-
----
-
-## ⚡ Status
-
-```bash
-System: ONLINE 🟢
-Security: BYPASSED 🔓
-Access Level: ROOT
-```
-
----
-
-## 🌐 Connect
-
-* GitHub: https://github.com/romangon10
-
----
-
-🔥 *This is not hacking. This is art, simulation, and code.*
+[Román González](https://github.com/romangon10)

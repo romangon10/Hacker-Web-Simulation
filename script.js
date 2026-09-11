@@ -1,77 +1,44 @@
-// 🎥 Efecto Matrix
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
-
-const chars = "01アカサタナハマ";
-const fontSize = 14;
-const columns = canvas.width / fontSize;
-const drops = Array(Math.floor(columns)).fill(1);
-
-function drawMatrix() {
-  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#0f0";
-  ctx.font = fontSize + "px monospace";
-  drops.forEach((y, i) => {
-    const text = chars[Math.floor(Math.random() * chars.length)];
-    const x = i * fontSize;
-    ctx.fillText(text, x, y * fontSize);
-    if (y * fontSize > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
+import { createSimulation } from './simulation.js';
+const canvas = document.getElementById('matrix'), ctx = canvas.getContext('2d');
+const log = document.getElementById('terminal'), balance = document.getElementById('balance');
+const toggle = document.getElementById('toggle'), reset = document.getElementById('reset');
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+const model = createSimulation();
+let paused = reduced.matches, frame = 0, last = 0, elapsed = 0, drops = [];
+const messages = ['Inicializando entorno de demostración…', 'Preparando nodos ficticios…', 'Simulando canal de comunicación…', 'Cargando contador de prueba…', 'Simulación activa. No hay minería ni conexiones a billeteras.'];
+function resize() {
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(innerWidth * ratio); canvas.height = Math.round(innerHeight * ratio);
+  canvas.style.width = innerWidth + 'px'; canvas.style.height = innerHeight + 'px';
+  ctx?.setTransform(ratio, 0, 0, ratio, 0, 0);
+  drops = Array(Math.ceil(innerWidth / 18)).fill(1);
+}
+function sync() { toggle.textContent = paused ? 'Reanudar' : 'Pausar'; toggle.setAttribute('aria-pressed', String(paused)); }
+function append(text) { const p = document.createElement('p'); p.textContent = '> ' + text; log.append(p); }
+function animate(now) {
+  frame = 0;
+  if (paused || document.hidden) return;
+  const delta = last ? Math.min(now - last, 100) : 0; last = now; elapsed += delta;
+  if (elapsed >= 60) {
+    if (ctx && !reduced.matches) {
+      ctx.fillStyle = 'rgba(0,0,0,.12)'; ctx.fillRect(0, 0, innerWidth, innerHeight);
+      ctx.fillStyle = '#729e83'; ctx.font = '14px monospace';
+      drops.forEach((y, i) => { ctx.fillText(Math.random() > .5 ? '1' : '0', i * 18, y * 18); drops[i] = y * 18 > innerHeight && Math.random() > .975 ? 0 : y + 1; });
     }
-    drops[i]++;
-  });
-}
-setInterval(drawMatrix, 33);
-
-// 💻 Terminal fake
-const terminal = document.getElementById("terminal");
-const comandos = [
-  "> Accediendo a sistema global...",
-  "> Iniciando escaneo de redes ocultas...",
-  "> Cifrando canales de comunicación...",
-  "> Conectando con billetera BTC...",
-  "> Iniciando minería...",
-];
-
-let index = 0;
-let btcBalance = 0;
-
-function mostrarLinea() {
-  if (index < comandos.length) {
-    const linea = document.createElement("div");
-    linea.innerHTML = `<span class="rainbow">${comandos[index]}</span>`;
-    terminal.appendChild(linea);
-    index++;
-    setTimeout(mostrarLinea, 1200);
-  } else {
-    // Simular minería de bitcoins
-    const btcDiv = document.createElement("div");
-    btcDiv.id = "btc-mining";
-    terminal.appendChild(btcDiv);
-
-    const interval = setInterval(() => {
-      btcBalance += Math.random() * 0.01;
-      btcDiv.innerHTML = `<span class="rainbow">> BTC Minado: ${btcBalance.toFixed(5)} ฿</span>`;
-    }, 800);
-
-    // Esperando comandos
-    const final = document.createElement("div");
-    final.innerHTML = '<br><span>> Esperando comandos... <span class="blinker">█</span></span>';
-    terminal.appendChild(final);
-
-    // Botón final
-    const btn = document.createElement("button");
-    btn.className = "btn-fake";
-    btn.innerText = "Desactivar Sistema";
-    btn.onclick = () => {
-      clearInterval(interval);
-      alert("💣 ¡BOOM! Era una broma hacker. 😎");
-    };
-    terminal.appendChild(btn);
+    elapsed = 0;
   }
+  const events = model.advance(delta);
+  for (const index of events.lines) append(messages[index]);
+  balance.textContent = events.balance.toFixed(5) + ' BTC ficticios';
+  frame = requestAnimationFrame(animate);
 }
-
-setTimeout(mostrarLinea, 2000);
+function start() { last = 0; if (!frame && !paused && !document.hidden) frame = requestAnimationFrame(animate); sync(); }
+function stop() { cancelAnimationFrame(frame); frame = 0; last = 0; }
+toggle.addEventListener('click', () => { paused = !paused; if (paused) stop(); else start(); sync(); });
+reset.addEventListener('click', () => { stop(); model.reset(); log.replaceChildren(); balance.textContent = '0.00000 BTC ficticios'; elapsed = 0; start(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
+window.addEventListener('resize', resize);
+window.addEventListener('pagehide', stop);
+window.addEventListener('pageshow', start);
+reduced.addEventListener('change', () => { if (reduced.matches) { paused = true; stop(); sync(); ctx?.clearRect(0,0,innerWidth,innerHeight); } });
+resize(); start();
