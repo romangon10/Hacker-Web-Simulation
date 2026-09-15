@@ -11,9 +11,11 @@ test('smoke: muestra la terminal y su estado seguro', async ({ page }) => {
 
 test('pausa y reanuda la simulación', async ({ page }) => {
   await page.goto('/');
-  const toggle = page.getByRole('button', { name: 'Pausar' });
+  const toggle = page.locator('#toggle');
+  await expect(toggle).toHaveAccessibleName('Pausar');
   await toggle.click();
   await expect(toggle).toHaveText('Reanudar');
+  await expect(toggle).toHaveAccessibleName('Reanudar');
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('status')).toContainText('PAUSADA');
   await toggle.click();
