@@ -9,6 +9,11 @@
   "scripts": {
     "start": "node tools/serve.mjs",
     "build": "node tools/build.mjs",
-    "test": "node --test"
+    "test": "node --test test/*.test.js",
+    "test:e2e": "playwright test",
+    "test:qa": "npm test && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
   }
 }

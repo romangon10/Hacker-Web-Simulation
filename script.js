@@ -2,6 +2,7 @@ import { createSimulation } from './simulation.js';
 const canvas = document.getElementById('matrix'), ctx = canvas.getContext('2d');
 const log = document.getElementById('terminal'), balance = document.getElementById('balance');
 const toggle = document.getElementById('toggle'), reset = document.getElementById('reset');
+const status = document.getElementById('status');
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 const model = createSimulation();
 let paused = reduced.matches, frame = 0, last = 0, elapsed = 0, drops = [];
@@ -13,7 +14,12 @@ function resize() {
   ctx?.setTransform(ratio, 0, 0, ratio, 0, 0);
   drops = Array(Math.ceil(innerWidth / 18)).fill(1);
 }
-function sync() { toggle.textContent = paused ? 'Reanudar' : 'Pausar'; toggle.setAttribute('aria-pressed', String(paused)); }
+function sync() {
+  toggle.textContent = paused ? 'Reanudar' : 'Pausar';
+  toggle.setAttribute('aria-pressed', String(paused));
+  status.classList.toggle('paused', paused);
+  status.lastChild.textContent = paused ? 'PAUSADA' : 'ACTIVA';
+}
 function append(text) { const p = document.createElement('p'); p.textContent = '> ' + text; log.append(p); }
 function animate(now) {
   frame = 0;
@@ -40,5 +46,8 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) stop(
 window.addEventListener('resize', resize);
 window.addEventListener('pagehide', stop);
 window.addEventListener('pageshow', start);
-reduced.addEventListener('change', () => { if (reduced.matches) { paused = true; stop(); sync(); ctx?.clearRect(0,0,innerWidth,innerHeight); } });
+reduced.addEventListener('change', () => {
+  if (reduced.matches) { paused = true; stop(); ctx?.clearRect(0,0,innerWidth,innerHeight); }
+  sync();
+});
 resize(); start();
