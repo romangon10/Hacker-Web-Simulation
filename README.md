@@ -1,12 +1,26 @@
-# Hacker-Web-Simulation
+# Hacker Web Simulation
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=111) ![Canvas API](https://img.shields.io/badge/Canvas_API-111111?logo=html5&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white)
+[![Quality](https://github.com/romangon10/Hacker-Web-Simulation/actions/workflows/quality.yml/badge.svg)](https://github.com/romangon10/Hacker-Web-Simulation/actions/workflows/quality.yml)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=111)
+![Canvas API](https://img.shields.io/badge/Canvas_API-111111?logo=html5&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)
 
-Terminal visual de ficción; no ejecuta ataques ni minería.
+An interactive fictional terminal built for the browser. It does **not** perform attacks, mining or real system operations.
 
-## Ejecutar
+## Features
 
-Requiere Node.js 22 o superior. No hay dependencias de paquetes.
+- Pause, resume and reset controls for the simulation state.
+- Responsive Canvas animation that adapts to the viewport.
+- Animation suspension when the browser tab is hidden.
+- Simulation logic separated from the DOM for deterministic testing.
+- Reduced-motion support and an accessible activity log.
+- Explicit public-file allowlist in the local server.
+
+## Run locally
+
+Requires **Node.js 22 or later**. The project has no third-party runtime dependencies.
 
 ```sh
 git clone https://github.com/romangon10/Hacker-Web-Simulation.git
@@ -14,37 +28,43 @@ cd Hacker-Web-Simulation
 npm start
 ```
 
-Abrí `http://127.0.0.1:3000`. Para usar otro puerto, configurá `PORT`. Serví la página por HTTP; los proyectos con módulos ES no funcionan abriendo el HTML con `file://`.
+Open `http://127.0.0.1:3000`. Set `PORT` to use another port.
 
-## Funcionalidad implementada
-
-- Pausa, reanudación y reinicio del estado y contador.
-- Animación adaptable al tamaño de pantalla y pausada en pestañas ocultas.
-- Modelo de simulación separado del DOM, con pruebas deterministas.
-- Movimiento reducido y registro accesible.
-
-## Estructura
-
-- `index.html`: contenido y controles.
-- `style.css`: estilos y adaptación de pantalla.
-- `script.js`: interacción con el navegador.
-- `tools/serve.mjs`: servidor local con lista explícita de archivos públicos.
-- `tools/build.mjs`: copia de los archivos públicos a `dist/`.
-- `test/`: verificaciones automatizadas.
-
-## Verificación y publicación
+## Quality assurance
 
 ```sh
 npm test
 npm run build
 ```
 
-El resultado `dist/` puede alojarse en un servicio estático. El build no publica la página por sí mismo. Las pruebas comprueban referencias locales y sintaxis; los proyectos con lógica de simulación incluyen pruebas de esa lógica. No se ha realizado verificación visual automatizada en un navegador.
+| Quality gate | Coverage |
+| --- | --- |
+| Automated tests | Simulation state and deterministic logic |
+| Syntax validation | Browser and Node.js JavaScript |
+| Build validation | Required assets copied into `dist/` |
+| Repository CI | Tests and build run through GitHub Actions |
+| Manual checks | Responsive layout, controls and reduced motion |
 
-## Alcance
+## Structure
 
-Frontend de portfolio. No hay backend, base de datos, autenticación ni recolección de datos. Los controles cambian únicamente el estado temporal de la página. Las mejoras futuras deben acompañarse de sus propias pruebas y documentación.
+| Path | Responsibility |
+| --- | --- |
+| `index.html` | Semantic interface and controls |
+| `style.css` | Visual system and responsive layout |
+| `script.js` | Browser events, Canvas rendering and accessibility |
+| `simulation.js` | Testable simulation state |
+| `tools/serve.mjs` | Local HTTP server with explicit public assets |
+| `tools/build.mjs` | Static production build |
+| `test/` | Automated verification |
 
-## Autor
+## Deployment
 
-[Román González](https://github.com/romangon10)
+The `dist/` directory can be hosted by any static-site provider after running `npm run build`. Opening the source directly through `file://` is not supported because the project uses ES modules.
+
+## Scope and safety
+
+This is a visual portfolio simulation. It has no backend, authentication, database, telemetry or personal-data collection. Controls only modify temporary browser state.
+
+## Author
+
+Created by [Roman Nicolas Gonzalez](https://github.com/romangon10) · [LinkedIn](https://www.linkedin.com/in/romannicolasgonzalez/)
